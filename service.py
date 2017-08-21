@@ -8,24 +8,28 @@ from model import ParaphraserModel
 class Paraphraser(object):
     name = 'paraphraser'
 
-    @rpc
-    def predict(self, phrase=None, phrases=None):
+    def __init__(self):
         opt = dict()
         opt['datapath'] = '/home/aleksandr/Dev/data'
         opt['fasttext_model'] = 'model_yalen_sg_300.bin'
         opt['fasttext_dir'] = '/home/aleksandr/Dev/fastText'
         opt['pretrained_model'] = '/home/aleksandr/Dev/data/paraphrases/paraphraser'
+        opt['embedding_dim'] = 300
 
-        embdict = EmbeddingsDict(opt)
-        model = ParaphraserModel(opt, embdict)
-        single = [{
-            'text': 'Общая фраза\nСколько стоит чайник?\nПо чем кофеварка?'
-        }]
-        batch = model.batchify([model.build_ex(ex) for ex in single])
+        self.embdict = EmbeddingsDict(opt)
+        self.model = ParaphraserModel(opt, self.embdict)
 
-        prediction = model.predict(batch)
-        return [prediction]
+    @rpc
+    def predict(self, phrase=None, phrases=[]):
+        data = []
+        for p in phrases:
+            data.append({
+                'text': 'Dummy title\n%s\n%s' % (phrase, p)
+            })
+        batch, _ = self.model.batchify([self.model.build_ex(ex) for ex in data])
+        prediction = self.model.predict(batch)
+        return prediction
 
 if __name__ == '__main__':
     p = Paraphraser()
-    print(p.predict())
+    print(p.predict("Сколько стоит чайник", ["По чем кофеварка", "Сколько стоит пылесос", "По чем чай"]))
