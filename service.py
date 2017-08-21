@@ -18,10 +18,12 @@ class Paraphraser(object):
 
         embdict = EmbeddingsDict(opt)
         model = ParaphraserModel(opt, embdict)
-        single = {
+        single = [{
             'text': 'Общая фраза\nСколько стоит чайник?\nПо чем кофеварка?'
-        }
-        prediction = model.predict(single)
+        }]
+        batch = model.batchify([model.build_ex(ex) for ex in single])
+
+        prediction = model.predict(batch)
         return [prediction]
 
 if __name__ == '__main__':
