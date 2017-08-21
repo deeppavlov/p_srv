@@ -1,0 +1,4 @@
+nameko>=2.6.0
+numpy>=1.13.0
+tensorflow>=1.2.1
+Keras>=2.0.6
