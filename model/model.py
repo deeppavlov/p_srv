@@ -1,15 +1,17 @@
-import os
-import numpy as np
 import copy
 import json
+import os
+
+import numpy as np
 import tensorflow as tf
 from keras.backend.tensorflow_backend import set_session
+
 config = tf.ConfigProto()
 config.gpu_options.per_process_gpu_memory_fraction = 0.95
 config.gpu_options.visible_device_list = '0'
 set_session(tf.Session(config=config))
 
-from metrics import fbeta_score
+from model.metrics import fbeta_score
 
 from keras.layers import Dense, Activation, Input, LSTM, Dropout, multiply, Lambda
 from keras.models import Model
