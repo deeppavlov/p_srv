@@ -10,6 +10,8 @@ class Paraphraser(object):
 
     @rpc
     def predict(self, phrase=None, phrases=[]):
+        if phrases is None or len(phrases)==0:
+            return []
         with self.m['graph'].as_default():
             data = []
             for p in phrases:
@@ -18,4 +20,5 @@ class Paraphraser(object):
                 })
             batch, _ = self.m['model'].batchify([self.m['model'].build_ex(ex) for ex in data])
             prediction = self.m['model'].predict(batch)
-            return prediction.tolist()
+            result = prediction.tolist()
+            return result

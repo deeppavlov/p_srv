@@ -1,18 +1,16 @@
+import os
+import numpy as np
 import copy
 import json
-import os
-
-import numpy as np
 import tensorflow as tf
 from keras.backend.tensorflow_backend import set_session
-
 config = tf.ConfigProto()
 config.gpu_options.per_process_gpu_memory_fraction = 0.95
 config.gpu_options.visible_device_list = '0'
 set_session(tf.Session(config=config))
 
-from model.metrics import fbeta_score
-
+from .metrics import fbeta_score
+from .embeddings_dict import EmbeddingsDict
 from keras.layers import Dense, Activation, Input, LSTM, Dropout, multiply, Lambda
 from keras.models import Model
 from keras.layers.wrappers import Bidirectional
@@ -23,8 +21,7 @@ from keras.optimizers import Adam
 
 class ParaphraserModel(object):
 
-    def __init__(self, opt, embdict):
-        self.embdict = embdict
+    def __init__(self, opt):
         self.opt = copy.deepcopy(opt)
 
         if self.opt.get('pretrained_model'):
@@ -34,6 +31,18 @@ class ParaphraserModel(object):
             self._init_params()
             self._init_from_scratch()
 
+        self.embdict = EmbeddingsDict(opt, self.embedding_dim)
+
+        self.n_examples = 0
+        self.updates = 0
+        self.train_loss = 0.0
+        self.train_acc = 0.0
+        self.train_f1 = 0.0
+        self.val_loss = 0.0
+        self.val_acc = 0.0
+        self.val_f1 = 0.0
+
+    def reset_metrics(self):
         self.n_examples = 0
         self.updates = 0
         self.train_loss = 0.0
