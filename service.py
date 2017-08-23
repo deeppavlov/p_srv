@@ -21,4 +21,5 @@ class Paraphraser(object):
             batch, _ = self.m['model'].batchify([self.m['model'].build_ex(ex) for ex in data])
             prediction = self.m['model'].predict(batch)
             result = prediction.tolist()
+            print(result)
             return result

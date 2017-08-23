@@ -7,12 +7,10 @@ from model.embeddings_dict import EmbeddingsDict
 
 class Model(DependencyProvider):
     def __init__(self):
-        opt = dict()
-        opt['datapath'] = '/home/aleksandr/Dev/data'
-        opt['fasttext_model'] = 'ft_0.8.3_yalen_sg_300.bin'
-        opt['fasttext_dir'] = '/home/aleksandr/Dev/fastText'
-        opt['pretrained_model'] = '/home/aleksandr/Dev/data/paraphrases/paraphraser'
-
+        opt = {
+            'fasttext_model': 'ft_0.8.3_yalen_sg_300.bin',
+            'pretrained_model': './data/paraphraser'
+        }
         self.model = ParaphraserModel(opt)
         self.graph = tf.get_default_graph()
 
