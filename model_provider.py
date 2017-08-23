@@ -8,8 +8,8 @@ from model.embeddings_dict import EmbeddingsDict
 class Model(DependencyProvider):
     def __init__(self):
         opt = {
-            'fasttext_model': 'ft_0.8.3_yalen_sg_300.bin',
-            'pretrained_model': './data/paraphraser'
+            'fasttext_model': '/data/fasttext.bin',
+            'pretrained_model': '/data/paraphraser'
         }
         self.model = ParaphraserModel(opt)
         self.graph = tf.get_default_graph()
