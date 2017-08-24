@@ -1,21 +1,21 @@
 from nameko.extensions import DependencyProvider
 import tensorflow as tf
+from deeppavlov.agents.paraphraser.paraphraser import ParaphraserAgent
+import os
 
-from model.model import ParaphraserModel
-from model.embeddings_dict import EmbeddingsDict
-
-
-class Model(DependencyProvider):
+class Agent(DependencyProvider):
     def __init__(self):
+        data_path = os.environ['PARAPHRASER_DATA']
         opt = {
-            'fasttext_model': '/data/fasttext.bin',
-            'pretrained_model': '/data/paraphraser'
+            'fasttext_model': os.path.join(data_path, 'fasttext.bin'),
+            'pretrained_model': os.path.join(data_path, 'paraphraser')
         }
-        self.model = ParaphraserModel(opt)
+        self.agent = ParaphraserAgent(opt)
+        # self.model = ParaphraserModel(opt)
         self.graph = tf.get_default_graph()
 
     def get_dependency(self, worker_ctx):
         return {
-            'model': self.model,
+            'agent': self.agent,
             'graph': self.graph
         }

@@ -1,25 +1,28 @@
 from nameko.rpc import rpc
-from model_provider import Model
+from model_provider import Agent
 
 
 class Paraphraser(object):
 
     name = 'paraphraser'
 
-    m = Model()
+    a = Agent()
 
     @rpc
     def predict(self, phrase=None, phrases=[]):
         if phrases is None or len(phrases)==0:
             return []
-        with self.m['graph'].as_default():
-            data = []
+        with self.a['graph'].as_default():
+            observations = []
             for p in phrases:
-                data.append({
+                observations.append({
+                    'id': 'p_srv',
                     'text': 'Dummy title\n%s\n%s' % (phrase, p)
                 })
-            batch, _ = self.m['model'].batchify([self.m['model'].build_ex(ex) for ex in data])
-            prediction = self.m['model'].predict(batch)
-            result = prediction.tolist()
+            predictions = self.a['agent'].batch_act(observations)
+            result = []
+            for p in predictions:
+                score = p['score'].tolist()[0]
+                result.append(score)
             print(result)
             return result
