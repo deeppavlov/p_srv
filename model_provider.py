@@ -9,7 +9,7 @@ class Agent(DependencyProvider):
         data_path = os.environ['PARAPHRASER_DATA']
         opt = {
             'fasttext_model': os.path.join(data_path, 'fasttext.bin'),
-            'model_files': [os.path.join(data_path, 'models/maxpool_match_%i' % i) for i in range(5)],
+            'model_files': [os.path.join(data_path, 'models/sberemb_paraphrasersbertrain_bilstm_woatt_%i' % i) for i in range(1)],
             'datatype': 'test'
 
         }
