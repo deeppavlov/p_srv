@@ -46,7 +46,7 @@ class FaqParaphraser(object):
                 return []
             phrase_vector = self.__get_vectors([phrase])
             prediction = self.c["classifier"].predict(phrase_vector)
-            proba = self.c["classifier"].predict_proba(phrase_vector)
+            proba = self.c["classifier"].decision_function(phrase_vector)
             max_prob = proba[0, np.argmax(proba, axis=1)]
             return self.faq["questions_groups"][prediction[0]][0], self.faq["answers"][prediction[0]], max_prob[0]
 
