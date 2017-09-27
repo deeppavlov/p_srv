@@ -13,14 +13,12 @@ class Agent(DependencyProvider):
             config = json.loads(f.read())
         opt = config["opt"]
         self.agent = EnsembleParaphraserAgent(opt)
-        self.classifier = joblib.load(config["classifier"])
         self.graph = tf.get_default_graph()
 
     def get_dependency(self, worker_ctx):
         return {
             'agent': self.agent,
-            'graph': self.graph,
-            'classifier': self.classifier
+            'graph': self.graph
         }
 
 
