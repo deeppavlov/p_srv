@@ -1,5 +1,4 @@
-# p_srv
-Paraphraser microservice
+# Paraphraser microservice
 ```sh
 docker run --rm -d -h p_srv.local                                   \
            --name p_srv                                             \
