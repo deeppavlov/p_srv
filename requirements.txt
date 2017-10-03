@@ -1,4 +1,4 @@
 nameko>=2.6.0
 -e git+https://github.com/facebookresearch/ParlAI.git@9800a9241dbb89ae2ce4b51653ec158ebce799d4#egg=parlai
 --extra-index-url http://lnsigo.dc.phystech.edu:5050/ --trusted-host lnsigo.dc.phystech.edu
-deeppavlov>=0.0.3
+deeppavlov>=0.0.4
